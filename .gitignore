@@ -1,0 +1,14 @@
+.venv/
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+# model weights and downloaded datasets
+*.pt
+*.pth
+data/
+_archive/
+
+# editor and secrets
+.vscode/
+.env
+*.env

@@ -1,0 +1,9 @@
+# Everything the notebooks need, for the whole learning series.
+jupyterlab
+notebook
+ipykernel
+numpy
+matplotlib
+graphviz
+# PyTorch is used from makemore (lecture 2) onward and in the micrograd comparison cell.
+torch
