@@ -11,13 +11,13 @@ Notebooks and notes from working through Andrej Karpathy's [Neural Networks: Zer
 | 01 | Intro to LLMs and Deep Dive into LLMs | 2026-11-11 | Watched, no code | [journal](01-intro-videos/journal.md) | n/a | n/a |
 | 02 | micrograd: a tiny autograd engine | 2026-11-15 | My backpropagation engine gives the same gradients as PyTorch | [journal](02-micrograd/journal.md) | [learnings](02-micrograd/learnings.md) | [micro_grad.ipynb](02-micrograd/micro_grad.ipynb) |
 | 03 | makemore part 1: a bigram language model | 2026-11-22 | Counting model loss 2.4544; a neural network trained to about 2.46 | [journal](03-makemore-bigram/journal.md) | [learnings](03-makemore-bigram/learnings.md) | [makemore.ipynb](03-makemore-bigram/makemore.ipynb) |
-| 04 | makemore part 2: an MLP language model | 2026-11-26 | Test loss about 2.17, against about 2.45 for the bigram model | [journal](04-makemore-mlp/journal.md) | [learnings](04-makemore-mlp/learnings.md) | [makemore_mlp.ipynb](04-makemore-mlp/makemore_mlp.ipynb) |
+| 04 | makemore part 2: an MLP language model | 2026-11-26 | Test loss about 2.15, against about 2.45 for the bigram model | [journal](04-makemore-mlp/journal.md) | [learnings](04-makemore-mlp/learnings.md) | [makemore_mlp.ipynb](04-makemore-mlp/makemore_mlp.ipynb) |
 
 Lower loss is better. Guessing uniformly over the 27 characters gives a loss of 3.30.
 
 ## Check any project on its own
 
-Each journal (except 01) ends with a "How to verify" section. Open the notebook, choose Restart Kernel and Run All Cells, and compare with the numbers there. Project 04 trains with random mini-batches and no fixed seed, so its losses differ by a few hundredths from run to run.
+Each journal (except 01) ends with a "How to verify" section. Open the notebook, choose Restart Kernel and Run All Cells, and compare with the numbers there. Project 04 is seeded, so the same steps should reproduce its numbers on the same setup; a different PyTorch version or computer can differ slightly.
 
 ## Setup (once)
 

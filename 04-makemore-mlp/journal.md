@@ -10,20 +10,18 @@ Built a character-level language model that predicts the next letter from the pr
 | What | Value |
 |---|---|
 | Names in the data set | 32,033 |
-| Examples (train / dev / test) | 182,455 / 22,929 / 22,762 |
+| Examples (train / dev / test) | 182,625 / 22,655 / 22,866 |
 | Context length | 3 letters |
 | Embedding size, hidden neurons, batch size | 30, 200, 32 |
 | Training | 6 passes of 30,000 steps (180,000 total): 2 at learning rate 0.1, 2 at 0.01, 2 at 0.005 |
 | Parameters | 24,437 (27x30 + 90x200 + 200 + 200x27 + 27) |
 | Uniform-guessing baseline loss | ln(27) = 3.30 |
 | Counting bigram model (last project) | 2.4544 |
-| **Train loss (full set)** | **2.0789** |
-| **Dev loss (full set)** | **2.1693** |
-| **Test loss (run once, at the end)** | **2.1709** |
+| **Train loss (full set)** | **2.0762** |
+| **Dev loss (full set)** | **2.1529** |
+| **Test loss (run once, at the end)** | **2.1517** |
 
-The MLP beats the bigram by about 0.28 on unseen names, because it sees three letters of context instead of one. Test (2.1709) is almost the same as dev (2.1693). I tuned on dev but never on test, so about 2.17 is an honest estimate for new names.
-
-Sample names from the trained model: `deliah.`, `kaleigh.`, `tate.`, `skanden.`, `quintin.` Some are not names at all (`kentceriin.`, `dearynix.`).
+The MLP beats the bigram by about 0.30 on unseen names, because it sees three letters of context instead of one. Test (2.1517) is almost the same as dev (2.1529). I tuned on dev but never on test, so about 2.15 is an honest estimate for new names.
 
 
 ## How I did it
@@ -48,7 +46,7 @@ Coded along with the lecture in my own notebook. Wrote the dataset builder (3 le
 **Quiz:** 8 interview-style questions on this project. Questions and answers are in [`learnings.md`](learnings.md).
 
 ## Limits and what I'd do differently
-- Only three letters of context, and some samples are still not names (`kentceriin.`, `dearynix.`).
+- Only three letters of context, so the model can't see the shape of a whole name.
 - The weights start as plain unscaled random numbers (`torch.randn`). I did not tune the starting values.
 - I picked the learning-rate schedule by hand while watching dev loss, and wrote it down only at the end. Next time I will log each pass as I go.
 - One run, one random seed. I don't know how much the numbers move between seeds.
@@ -59,9 +57,11 @@ Coded along with the lecture in my own notebook. Wrote the dataset builder (3 le
 Next lecture in the series.
 
 ## How to verify
-Install `requirements.txt`, open `makemore_mlp.ipynb` from this folder so `names.txt` is found, and run the cells from the top. To follow my schedule, set `learning_rate` in the settings cell, run the training cell twice at 0.1, twice at 0.01 and twice at 0.005 (each run continues from the weights the last one left), then run the three eval cells.
+Install `requirements.txt`, open `makemore_mlp.ipynb` from this folder so `names.txt` is found, restart the kernel and run the cells from the top. The split and the mini-batch picks are seeded (`random.seed(42)` for the split, a generator `gb` for the batches), so the same steps should give the same numbers on the same setup.
 
-My saved results are train 2.0789, dev 2.1693 and test 2.1709, with 182,455 / 22,929 / 22,762 examples. Because the split cell reshuffles in place, a run from the top uses a different split, so expect the losses to differ by a few hundredths.
+The order matters. After the setup cells, run the training cell six times, setting `lr` in that cell before each run: 0.1, 0.1, 0.01, 0.01, 0.005, 0.005 (each run continues from the weights the last one left, 30,000 steps each). Then run the train, dev and test eval cells once each. Do not run the training cell an extra time, or the numbers change.
+
+My saved results: train 2.0762, dev 2.1529, test 2.1517, with 182,625 / 22,655 / 22,866 examples and 24,437 parameters. A different PyTorch version or computer can differ in the second or third decimal.
 
 What a correct run always shows:
 - The loss falls over the training passes.

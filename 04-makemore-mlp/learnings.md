@@ -1,6 +1,6 @@
 # makemore part 2 (MLP): learnings
 
-What I learned building a small neural language model, as questions I'd expect in an AI engineering interview, answered in plain English. Most of these started as questions I asked while working. The numbers come from the notebook in this folder: 32,033 names, three letters of context, test loss 2.1709.
+What I learned building a small neural language model, as questions I'd expect in an AI engineering interview, answered in plain English. Most of these started as questions I asked while working. The results are in the notebook in this folder.
 
 **1. Why does `C[X][13, 2]` equal `C[X[13, 2]]`?**
 Indexing a table with a grid of numbers looks up each number on its own and keeps the grid's shape. So `C[X]` is the whole grid with every letter replaced by its row, and picking spot (13, 2) from it gives the row for the letter at that spot. Picking the letter first and then looking it up gives the same row.
@@ -24,10 +24,10 @@ Loss on data the model trained on can look good because it memorized it. Held-ou
 No. For dev and test I only run the forward pass and compute the loss. Backward and weight updates happen on train only. After choosing settings on dev, one may retrain on train and dev together, but never on test.
 
 **8. Train loss and dev loss are close. What does that mean?**
-If both are close and both are high, the model is underfitting: it hasn't learned enough yet, and more training or capacity helps. If train is far below dev, it is overfitting, which means memorizing the training names. Mine ended at train 2.0789 against dev 2.1693, a small gap that is normal.
+If both are close and both are high, the model is underfitting: it hasn't learned enough yet, and more training or capacity helps. If train is far below dev, it is overfitting, which means memorizing the training names. Mine ended with a small gap between train and dev, which is normal.
 
-**9. What does it mean that test (2.1709) is about equal to dev (2.1693)?**
-I picked settings by watching dev, which can quietly fit dev. Test is data I never tuned on, so a matching number is evidence that the dev result is honest and about 2.17 is a fair estimate for new names.
+**9. What does it mean when test loss is about equal to dev loss?**
+I picked settings by watching dev, which can quietly fit dev. Test is data I never tuned on, so a matching number is evidence that the dev result is honest and is a fair estimate for new names.
 
 **10. How does hidden-layer size matter?**
 It sets how many patterns the model can detect between reading the letters and guessing the next one. Too few neurons and both train and dev stay high however long I train. Too many and it can memorize, which shows up as train falling while dev stalls or rises. It also sets the parameter count: the weights into and out of the hidden layer both scale with it.
@@ -42,7 +42,7 @@ The parameters weren't tracking gradients. Setting `requires_grad = True` on eac
 It replaces each weight with its scaled gradient, wiping out everything learned. A gradient descent step moves the existing weight a small way against its gradient: `p.data += -lr * p.grad`.
 
 **14. Why compare against the bigram model and the uniform baseline?**
-They give the number meaning. Uniform guessing over 27 letters gives ln(27) = 3.30. The counting bigram gave 2.4544. The MLP's 2.1709 on test is about 0.28 better than the bigram. Without baselines, 2.17 on its own tells you nothing.
+They give the number meaning. Uniform guessing over 27 letters gives a loss of ln(27), about 3.30. The counting bigram model is the next step up. The MLP's test loss is clearly lower than both. Without baselines, a loss number on its own tells you nothing.
 
 ## Questions I can't answer yet
 
